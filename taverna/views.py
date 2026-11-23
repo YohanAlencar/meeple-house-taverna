@@ -1,4 +1,5 @@
 import json
+from urllib.parse import quote
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -16,34 +17,47 @@ from .supabase_client import (
     deletar_integrante,
 )
 
+
+def _svg_data_url(rotulo: str, subtitulo: str) -> str:
+    svg = (
+        "<svg xmlns='http://www.w3.org/2000/svg' width='600' height='400' viewBox='0 0 600 400'>"
+        "<rect width='600' height='400' fill='#1c1917'/>"
+        "<rect x='18' y='18' width='564' height='364' rx='12' fill='none' stroke='#d4af37' stroke-opacity='0.45' stroke-width='2'/>"
+        f"<text x='300' y='185' text-anchor='middle' fill='#f5d061' font-family='Arial, sans-serif' font-size='28' font-weight='bold'>{rotulo}</text>"
+        f"<text x='300' y='225' text-anchor='middle' fill='#d6d3d1' font-family='Arial, sans-serif' font-size='18'>{subtitulo}</text>"
+        "</svg>"
+    )
+    return "data:image/svg+xml;utf8," + quote(svg)
+
+
 PRODUTOS_API_FALLBACK = [
     {
         "id": 1,
         "title": "Dado Poliedrico D20 Metalico",
         "price": 49.90,
         "category": "acessorios rpg",
-        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+        "image": _svg_data_url("DADO D20 METALICO", "Acessorios RPG"),
     },
     {
         "id": 2,
         "title": "Tapete de Batalha Quadriculado",
         "price": 129.90,
         "category": "tabuleiros",
-        "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+        "image": _svg_data_url("TAPETE DE BATALHA", "Tabuleiros"),
     },
     {
         "id": 3,
         "title": "Torre de Dados em Madeira",
         "price": 89.90,
         "category": "acessorios rpg",
-        "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+        "image": _svg_data_url("TORRE DE DADOS", "Acessorios RPG"),
     },
     {
         "id": 4,
         "title": "Sleeves Protetores para Cartas (100un)",
         "price": 34.90,
         "category": "card games",
-        "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
+        "image": _svg_data_url("SLEEVES (100 UN)", "Card Games"),
     },
 ]
 
