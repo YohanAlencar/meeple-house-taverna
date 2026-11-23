@@ -16,6 +16,37 @@ from .supabase_client import (
     deletar_integrante,
 )
 
+PRODUTOS_API_FALLBACK = [
+    {
+        "id": 1,
+        "title": "Dado Poliedrico D20 Metalico",
+        "price": 49.90,
+        "category": "acessorios rpg",
+        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+    },
+    {
+        "id": 2,
+        "title": "Tapete de Batalha Quadriculado",
+        "price": 129.90,
+        "category": "tabuleiros",
+        "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+    },
+    {
+        "id": 3,
+        "title": "Torre de Dados em Madeira",
+        "price": 89.90,
+        "category": "acessorios rpg",
+        "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+    },
+    {
+        "id": 4,
+        "title": "Sleeves Protetores para Cartas (100un)",
+        "price": 34.90,
+        "category": "card games",
+        "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
+    },
+]
+
 
 def home(request):
     return render(request, "taverna/home.html")
@@ -30,17 +61,37 @@ def produtos(request):
     produtos_locais = Produto.objects.filter(ativo=True)
 
     produtos_api = []
+    headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+            "AppleWebKit/537.36 (KHTML, like Gecko) "
+            "Chrome/124.0.0.0 Safari/537.36"
+        ),
+        "Accept": "application/json",
+    }
+
     try:
         response = requests.get(
-            "https://fakestoreapi.com/products?limit=4", timeout=8
+            "https://fakestoreapi.com/products?limit=4",
+            headers=headers,
+            timeout=8,
         )
         print("Status FakeStoreAPI:", response.status_code, flush=True)
         if response.status_code == 200:
-            produtos_api = response.json()
-            print("Qtd produtos API:", len(produtos_api), flush=True)
+            dados = response.json()
+            if isinstance(dados, list) and len(dados) > 0:
+                produtos_api = dados
+                print("Qtd produtos API:", len(produtos_api), flush=True)
+        else:
+            print(
+                "FakeStoreAPI bloqueou/retornou status diferente de 200; usando fallback.",
+                flush=True,
+            )
     except Exception as e:
         print("ERRO na FakeStoreAPI:", repr(e), flush=True)
-        produtos_api = []
+
+    if not produtos_api:
+        produtos_api = PRODUTOS_API_FALLBACK
 
     return render(
         request,
