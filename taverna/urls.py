@@ -1,11 +1,13 @@
 from django.contrib.auth.views import (
     LogoutView,
+    PasswordChangeDoneView,
+    PasswordChangeView,
     PasswordResetCompleteView,
     PasswordResetConfirmView,
     PasswordResetDoneView,
     PasswordResetView,
 )
-from django.urls import path
+from django.urls import path, reverse_lazy
 from . import views
 
 urlpatterns = [
@@ -16,7 +18,7 @@ urlpatterns = [
     path("cadastrar/", views.cadastrar_usuario, name="cadastrar"),
     path("login/", views.login_usuario, name="login"),
     path("logout/", LogoutView.as_view(next_page="home"), name="logout"),
-    # Rotas de Recuperação de Senha (usando o teu password_reset.html)
+    # Rotas de Recuperação de Senha
     path(
         "password_reset/",
         PasswordResetView.as_view(template_name="taverna/password_reset.html"),
@@ -43,7 +45,23 @@ urlpatterns = [
         ),
         name="password_reset_complete",
     ),
-    # Restante das tuas rotas...
+    # Rotas de Alteração de Senha (a partir do Editar Perfil)
+    path(
+        "alterar-senha/",
+        PasswordChangeView.as_view(
+            template_name="taverna/password_change.html",
+            success_url=reverse_lazy("password_change_done"),
+        ),
+        name="password_change",
+    ),
+    path(
+        "alterar-senha/concluida/",
+        PasswordChangeDoneView.as_view(
+            template_name="taverna/password_change_done.html"
+        ),
+        name="password_change_done",
+    ),
+    # Restante das rotas
     path(
         "adicionar-ao-pedido/<int:produto_id>/",
         views.adicionar_ao_pedido,

@@ -1,7 +1,49 @@
 {% extends 'taverna/base.html' %}
 {% block content %}
-<h2 class="fw-bold mb-4">Meu Perfil</h2>
-<p class="text-muted">Utilizador atual: <strong>{{ user.username }}</strong></p>
-<p class="text-muted">E-mail: {{ user.email }}</p>
-<a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Voltar ao Dashboard</a>
+<div class="container my-5" style="max-width: 600px;">
+    <div class="card bg-dark text-light border-warning p-4 shadow">
+        <h2 class="text-warning fw-bold mb-2">Meu Perfil</h2>
+        <p class="text-muted small mb-4">
+            Utilizador atual: <strong class="text-light">{{ user.username }}</strong>
+        </p>
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success py-2 small">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <form method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label class="form-label text-warning fw-bold">Nome:</label>
+                <input type="text" name="first_name" value="{{ user.first_name }}" class="form-control bg-secondary text-light border-0">
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label text-warning fw-bold">Sobrenome:</label>
+                <input type="text" name="last_name" value="{{ user.last_name }}" class="form-control bg-secondary text-light border-0">
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label text-warning fw-bold">E-mail:</label>
+                <input type="email" name="email" value="{{ user.email }}" class="form-control bg-secondary text-light border-0">
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 fw-bold py-2">Salvar alterações</button>
+        </form>
+
+        <hr class="border-secondary my-4">
+
+        <div class="d-flex justify-content-between align-items-center">
+            <a href="{% url 'password_change' %}" class="btn btn-outline-warning btn-sm fw-bold">
+                Alterar senha
+            </a>
+            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary btn-sm">
+                Voltar ao Dashboard
+            </a>
+        </div>
+    </div>
+</div>
 {% endblock %}
