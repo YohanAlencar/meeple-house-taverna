@@ -22,28 +22,28 @@ PRODUTOS_API_FALLBACK = [
         "title": "Fjallraven - Foldsack No. 1 Backpack",
         "price": 109.95,
         "category": "men's clothing",
-        "image": "https://fakestoreapi.com/img/81fPKd-2AYL._AC_SL1500_.jpg",
+        "image": "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80",
     },
     {
         "id": 2,
         "title": "Mens Casual Premium Slim Fit T-Shirts",
         "price": 22.3,
         "category": "men's clothing",
-        "image": "https://fakestoreapi.com/img/71-3HjGNDUL._AC_SY879._SX._UX._SY._UY_.jpg",
+        "image": "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=800&q=80",
     },
     {
         "id": 3,
         "title": "Mens Cotton Jacket",
         "price": 55.99,
         "category": "men's clothing",
-        "image": "https://fakestoreapi.com/img/71li-ujtlUL._AC_UX679_.jpg",
+        "image": "https://images.unsplash.com/photo-1551028719-00167b16eac5?auto=format&fit=crop&w=800&q=80",
     },
     {
         "id": 4,
         "title": "Mens Casual Slim Fit",
         "price": 15.99,
         "category": "men's clothing",
-        "image": "https://fakestoreapi.com/img/71YXzeOuslL._AC_UY879_.jpg",
+        "image": "https://images.unsplash.com/photo-1618354691373-d851c5c3a990?auto=format&fit=crop&w=800&q=80",
     },
 ]
 
