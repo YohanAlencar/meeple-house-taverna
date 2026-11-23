@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Meeple House - Taverna Medieval & Ludoteca</title>
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Fonts Medieval & Leitura -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@600;700&family=MedievalSharp&family=Plus+Jakarta+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --castle-dark: #120f0d;         /* Pedra escurecida de castelo */
+            --castle-wall: #1c1714;         /* Paredes de pedra */
+            --wood-dark: #281e18;           /* Madeira rústica escura */
+            --wood-border: #423227;         /* Viga de madeira */
+            --gold-amber: #d4af37;         /* Ouro envelhecido */
+            --gold-glow: #f5cf66;          /* Luz de vela/fogo */
+            --text-parchment: #e6dfd5;     /* Texto cor de pergaminho legível */
+            --text-muted: #a3998e;
+        }
+
+        body {
+            background-color: var(--castle-dark);
+            color: var(--text-parchment);
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            background-image: radial-gradient(circle at 50% 0%, #211914 0%, var(--castle-dark) 75%);
+        }
+
+        h1, h2, h3, h4, h5, h6, .navbar-brand {
+            font-family: 'Cinzel Decorative', 'Cinzel', serif;
+            color: var(--gold-amber);
+            letter-spacing: 2px; /* Espaçamento ideal para descolar as letras ornamentadas */
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.8);
+        }
+
+        /* Topbar estilo Grande Salão */
+        .navbar {
+            background-color: #0d0b09 !important;
+            border-bottom: 2px solid var(--wood-border);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+            padding-top: 0.9rem;
+            padding-bottom: 0.9rem;
+        }
+
+        .navbar-brand {
+            color: var(--gold-amber) !important;
+            font-size: 1.6rem;
+            text-shadow: 0 0 10px rgba(212, 175, 55, 0.3);
+        }
+
+        .nav-link {
+            color: var(--text-parchment) !important;
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--gold-glow) !important;
+            text-shadow: 0 0 8px rgba(245, 207, 102, 0.4);
+        }
+
+        /* Cartões estilo Escudo/Painel de Madeira Medieval */
+        .card {
+            background-color: var(--wood-dark);
+            border: 1px solid var(--wood-border);
+            border-radius: 8px;
+            color: var(--text-parchment);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            border-color: var(--gold-amber);
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.2);
+        }
+
+        .card-title {
+            color: var(--gold-amber);
+        }
+
+        .card-text, .text-muted {
+            color: var(--text-muted) !important;
+        }
+
+        /* Botões em Ouro e Ferro */
+        .btn-warning {
+            background: linear-gradient(180deg, #e6be44 0%, #b88f28 100%);
+            border: 1px solid #7a5d16;
+            color: #120f0d;
+            font-weight: 700;
+            font-family: 'Cinzel', serif;
+            border-radius: 4px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: all 0.2s;
+        }
+
+        .btn-warning:hover {
+            background: linear-gradient(180deg, #f5cf66 0%, #d4af37 100%);
+            color: #000000;
+            box-shadow: 0 0 12px rgba(212, 175, 55, 0.5);
+        }
+
+        .btn-outline-warning {
+            color: var(--gold-amber);
+            border: 1px solid var(--gold-amber);
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            border-radius: 4px;
+        }
+
+        .btn-outline-warning:hover {
+            background-color: var(--gold-amber);
+            color: #120f0d;
+        }
+
+        /* Formulários e Placeholders com tom equilibrado */
+        .form-control, .form-select {
+            background-color: #1a1410 !important;
+            border: 1px solid var(--wood-border) !important;
+            color: #f5f0eb !important;
+            border-radius: 4px;
+        }
+
+        .form-control::placeholder {
+            color: #7d7266 !important; /* Cinzento pergaminho discreto na medida certa */
+            opacity: 1;
+        }
+
+        .form-control:focus, .form-select:focus {
+            background-color: #211914 !important;
+            border-color: var(--gold-amber) !important;
+            color: #ffffff !important;
+            box-shadow: 0 0 0 0.25rem rgba(212, 175, 55, 0.25) !important;
+        }
+
+        label {
+            color: var(--text-parchment);
+            font-family: 'Cinzel', serif;
+            font-weight: 600;
+        }
+
+        /* Listas e Tabelas */
+        .list-group-item {
+            background-color: var(--wood-dark);
+            border-color: var(--wood-border);
+            color: var(--text-parchment);
+        }
+
+        .table {
+            color: var(--text-parchment);
+            border-color: var(--wood-border);
+        }
+
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: rgba(255, 255, 255, 0.02);
+            color: var(--text-parchment);
+        }
+
+        footer {
+            margin-top: auto;
+            background-color: #0d0b09;
+            border-top: 2px solid var(--wood-border);
+            color: var(--text-muted);
+            font-family: 'Cinzel', serif;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Menu Principal -->
+    <nav class="navbar navbar-expand-lg">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
+                <span style="color: var(--gold-amber); font-size: 1.4rem;">🛡️</span>
+                MEEPLE HOUSE
+            </a>
+            <button class="navbar-toggler border-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon" style="filter: invert(1);"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav align-items-center gap-3">
+                    <li class="nav-item"><a class="nav-link" href="{% url 'quem_somos' %}">Quem Somos</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'produtos' %}">Ludoteca</a></li>
+                    <li class="nav-item"><a class="nav-link" href="{% url 'contato' %}">Contato</a></li>
+                    
+                    {% if user.is_authenticated %}
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-outline-warning btn-sm" href="{% url 'dashboard' %}">Dashboard</a>
+                        </li>
+                        <li class="nav-item">
+                            <form action="{% url 'logout' %}" method="post" class="d-inline">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">Sair</button>
+                            </form>
+                        </li>
+                    {% else %}
+                        <li class="nav-item ms-2">
+                            <a class="btn btn-warning btn-sm" href="{% url 'login' %}">Entrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="btn btn-outline-warning btn-sm" href="{% url 'cadastrar' %}">Cadastrar</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="text-center py-4 mt-5">
+        <small>&copy; 2026 Meeple House - Taverna & Ludoteca Medieval.</small>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

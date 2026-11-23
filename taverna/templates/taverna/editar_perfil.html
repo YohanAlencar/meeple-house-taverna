@@ -1,0 +1,7 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+<h2 class="fw-bold mb-4">Meu Perfil</h2>
+<p class="text-muted">Utilizador atual: <strong>{{ user.username }}</strong></p>
+<p class="text-muted">E-mail: {{ user.email }}</p>
+<a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Voltar ao Dashboard</a>
+{% endblock %}

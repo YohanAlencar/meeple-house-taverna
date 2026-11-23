@@ -1,0 +1,104 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+
+<div class="container py-4">
+    <!-- Cabeçalho do Dashboard -->
+    <div class="p-4 p-md-5 mb-4 rounded-3 shadow-lg" style="background: linear-gradient(135deg, #1f1813 0%, #120e0b 100%); border: 1px solid var(--wood-border);">
+        <span class="badge px-3 py-1 mb-2" style="background-color: var(--wood-border); color: var(--gold-amber); font-family: 'Cinzel', serif;">PAINEL DO AVENTUREIRO</span>
+        <h1 class="display-6 fw-bold text-uppercase" style="color: var(--gold-amber); font-family: 'Cinzel', serif; letter-spacing: 2px;">
+            Olá, {{ user.username|default:"Aventureiro" }}!
+        </h1>
+        <p class="text-muted mb-0">Bem-vindo ao teu painel de controlo. Escolhe uma das opções abaixo para gerir o sistema.</p>
+    </div>
+
+    <!-- Grelha de Seções do Dashboard (Conforme exigido no PDF) -->
+    <div class="row g-4">
+        
+        <!-- Card 1: Editar Perfil -->
+        <div class="col-md-4">
+            <div class="card h-100 p-3 shadow-sm border-0" style="background-color: #1a1512; border: 1px solid #33261c;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="fs-2 mb-2">👤</div>
+                        <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Editar Perfil</h5>
+                        <p class="text-muted small">Visualiza e edita as tuas informações pessoais e altera a tua palavra-passe.</p>
+                    </div>
+                    <a href="{% url 'editar_perfil' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Aceder Perfil →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Contatos -->
+        <div class="col-md-4">
+            <div class="card h-100 p-3 shadow-sm border-0" style="background-color: #1a1512; border: 1px solid #33261c;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="fs-2 mb-2">📬</div>
+                        <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Contatos</h5>
+                        <p class="text-muted small">Consulta e gere as mensagens enviadas pelos visitantes da taverna.</p>
+                    </div>
+                    <a href="{% url 'gerenciar_contatos' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Gerir Contatos →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3: Serviços -->
+        <div class="col-md-4">
+            <div class="card h-100 p-3 shadow-sm border-0" style="background-color: #1a1512; border: 1px solid #33261c;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="fs-2 mb-2">🛠️</div>
+                        <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Serviços</h5>
+                        <p class="text-muted small">Cadastra, filtra e gere os serviços oferecidos pela taverna.</p>
+                    </div>
+                    <a href="{% url 'gerenciar_servicos' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Gerir Serviços →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 4: Equipe -->
+        <div class="col-md-4">
+            <div class="card h-100 p-3 shadow-sm border-0" style="background-color: #1a1512; border: 1px solid #33261c;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="fs-2 mb-2">🛡️</div>
+                        <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Equipe</h5>
+                        <p class="text-muted small">Gere a equipa de integrantes registada na base de dados remota do Supabase.</p>
+                    </div>
+                    <a href="{% url 'gerenciar_equipe' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Gerir Equipe →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 5: Meus Pedidos -->
+        <div class="col-md-4">
+            <div class="card h-100 p-3 shadow-sm border-0" style="background-color: #1a1512; border: 1px solid #33261c;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="fs-2 mb-2">🛒</div>
+                        <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Meus Pedidos</h5>
+                        <p class="text-muted small">Visualiza os jogos e produtos que adicionaste ao teu carrinho de compras.</p>
+                    </div>
+                    <a href="{% url 'meus_pedidos' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Ver Pedidos →</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 6: Relatórios -->
+        <div class="col-md-4">
+            <div class="card h-100 p-3 shadow-sm border-0" style="background-color: #1a1512; border: 1px solid #33261c;">
+                <div class="card-body d-flex flex-column justify-content-between">
+                    <div>
+                        <div class="fs-2 mb-2">📊</div>
+                        <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Relatórios</h5>
+                        <p class="text-muted small">Acede aos gráficos e estatísticas gerais dos serviços cadastrados.</p>
+                    </div>
+                    <a href="{% url 'relatorios' %}" class="btn btn-warning btn-sm mt-3 w-100 fw-bold">Aceder Relatórios →</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

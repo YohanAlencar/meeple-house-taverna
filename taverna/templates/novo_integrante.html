@@ -1,0 +1,44 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+
+<div class="row justify-content-center py-4">
+    <div class="col-md-6">
+        <div class="card p-4 p-md-5 shadow-lg bg-dark text-white border-secondary">
+            <div class="text-center mb-4">
+                <span class="badge bg-success px-3 py-1 mb-2">NOVO REGISTO</span>
+                <h2 class="fw-bold">Novo Integrante</h2>
+                <p class="text-muted small">Cadastre um novo membro da equipa no Supabase.</p>
+            </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label text-warning">Nome Completo</label>
+                    <input type="text" name="nome" class="form-control bg-secondary text-white border-0" required placeholder="Ex: Yohan Ruiz">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-warning">Cargo</label>
+                    <input type="text" name="cargo" class="form-control bg-secondary text-white border-0" required placeholder="Ex: Desenvolvedor Fullstack">
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label text-warning">Biografia</label>
+                    <textarea name="biografia" class="form-control bg-secondary text-white border-0" rows="3" required placeholder="Breve descrição..."></textarea>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label text-warning">URL da Foto</label>
+                    <input type="url" name="foto_url" class="form-control bg-secondary text-white border-0" placeholder="https://..." required>
+                </div>
+
+                <div class="d-grid gap-2">
+                    <button type="submit" class="btn btn-success fw-bold">Cadastrar Integrante</button>
+                    <a href="{% url 'gerenciar_equipe' %}" class="btn btn-outline-secondary">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

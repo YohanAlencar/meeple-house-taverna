@@ -1,0 +1,108 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+
+<div class="container py-4">
+    <div class="mb-4">
+        <span class="text-muted small text-uppercase">ANÁLISE E DADOS</span>
+        <h2 class="fw-bold">Relatórios de Serviços</h2>
+        <p class="text-muted">Acompanhe a métrica e a distribuição dos serviços cadastrados no sistema.</p>
+    </div>
+
+    <!-- Cards de Indicadores -->
+    <div class="row g-4 mb-5">
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm border-0 bg-dark text-white">
+                <span class="text-muted small">Total de Serviços</span>
+                <h3 class="fw-bold my-1">{{ total_servicos }}</h3>
+                <span class="small text-success">Cadastrados no sistema</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm border-0 bg-dark text-white">
+                <span class="text-muted small">Serviços Ativos</span>
+                <h3 class="fw-bold my-1 text-success">{{ servicos_ativos }}</h3>
+                <span class="small text-muted">Disponíveis para contratação</span>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card p-3 shadow-sm border-0 bg-dark text-white">
+                <span class="text-muted small">Serviços Inativos</span>
+                <h3 class="fw-bold my-1 text-warning">{{ servicos_inativos }}</h3>
+                <span class="small text-muted">Em manutenção ou pausa</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Gráficos -->
+    <div class="row g-4">
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm border-0 bg-dark text-white h-100">
+                <h5 class="fw-bold mb-3">Serviços por Categoria</h5>
+                <div style="position: relative; height: 280px; width: 100%;">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card p-4 shadow-sm border-0 bg-dark text-white h-100">
+                <h5 class="fw-bold mb-3">Situação dos Serviços</h5>
+                <div style="position: relative; height: 280px; width: 100%; display: flex; justify-content: center;">
+                    <canvas id="doughnutChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chart.js para os gráficos -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const categoriasLabels = {{ categorias_labels_json|safe }};
+    const categoriasValores = {{ categorias_valores_json|safe }};
+    const servicosAtivos = {{ servicos_ativos|default:0 }};
+    const servicosInativos = {{ servicos_inativos|default:0 }};
+
+    // Gráfico de Barras
+    const ctxBar = document.getElementById('barChart').getContext('2d');
+    new Chart(ctxBar, {
+        type: 'bar',
+        data: {
+            labels: categoriasLabels,
+            datasets: [{
+                label: 'Quantidade',
+                data: categoriasValores,
+                backgroundColor: '#198754'
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: { legend: { display: false } },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+
+    // Gráfico de Rosca
+    const ctxDoughnut = document.getElementById('doughnutChart').getContext('2d');
+    new Chart(ctxDoughnut, {
+        type: 'doughnut',
+        data: {
+            labels: ['Ativos', 'Inativos'],
+            datasets: [{
+                data: [servicosAtivos, servicosInativos],
+                backgroundColor: ['#198754', '#ffc107']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+
+{% endblock %}

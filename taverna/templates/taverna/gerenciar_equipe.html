@@ -1,0 +1,101 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+
+<div class="container py-4">
+    <!-- Cabeçalho e Botão de Novo Integrante -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <span class="text-muted small text-uppercase">PAINEL DE CONTROLO</span>
+            <h2 class="fw-bold text-uppercase" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Gerenciar Integrantes (Supabase)</h2>
+            <p class="text-muted small mb-0">Cadastre, consulte, edite e remova os membros da equipa.</p>
+        </div>
+        <!-- Botão para abrir o modal ou formulário de novo integrante -->
+        <button type="button" class="btn btn-warning fw-bold shadow" data-bs-toggle="modal" data-bs-target="#modalNovoIntegrante" style="font-family: 'Cinzel', serif;">
+            + Novo Integrante
+        </button>
+    </div>
+
+    <!-- Tabela de Gestão de Integrantes -->
+    <div class="card shadow-lg bg-dark text-white border-secondary">
+        <div class="card-body p-0">
+            <div class="table-responsive">
+                <table class="table table-dark table-hover align-middle mb-0">
+                    <thead style="background-color: #1a1410; color: var(--gold-amber); font-family: 'Cinzel', serif;">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Foto</th>
+                            <th>Nome</th>
+                            <th>Cargo</th>
+                            <th>Biografia</th>
+                            <th class="text-end pe-4">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for integrante in integrantes %}
+                        <tr>
+                            <td class="ps-4 fw-bold">#{{ integrante.id }}</td>
+                            <td>
+                                <img src="{{ integrante.foto_url }}" alt="{{ integrante.nome }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover; border: 1px solid var(--gold-amber);">
+                            </td>
+                            <td class="fw-bold">{{ integrante.nome }}</td>
+                            <td><span class="badge bg-secondary">{{ integrante.cargo }}</span></td>
+                            <td class="text-muted small" style="max-width: 250px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ integrante.biografia }}</td>
+                            <td class="text-end pe-4">
+                                <a href="{% url 'editar_integrante' integrante.id %}" class="btn btn-sm btn-outline-warning me-1">Editar</a>
+                                <a href="{% url 'excluir_integrante' integrante.id %}" class="btn btn-sm btn-outline-danger" onclick="return confirm('Tens a certeza que pretendes remover este integrante?')">Excluir</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td colspan="6" class="text-center py-4 text-muted">Nenhum integrante registado no Supabase.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="mt-4">
+        <a href="{% url 'dashboard' %}" class="text-muted small text-decoration-none">← Voltar ao Dashboard</a>
+    </div>
+</div>
+
+<!-- Modal para Adicionar Novo Integrante -->
+<div class="modal fade" id="modalNovoIntegrante" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-dark text-white border-secondary shadow-lg">
+            <div class="modal-header border-secondary">
+                <h5 class="modal-title fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Novo Integrante</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <form method="post">
+                <div class="modal-body">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label class="form-label text-warning small">Nome Completo</label>
+                        <input type="text" name="nome" class="form-control bg-secondary text-white border-0" required placeholder="Ex: Yohan Ruiz">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-warning small">Cargo</label>
+                        <input type="text" name="cargo" class="form-control bg-secondary text-white border-0" required placeholder="Ex: Desenvolvedor Fullstack">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-warning small">Biografia</label>
+                        <textarea name="biografia" class="form-control bg-secondary text-white border-0" rows="3" required placeholder="Breve descrição..."></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label text-warning small">URL da Foto</label>
+                        <input type="url" name="foto_url" class="form-control bg-secondary text-white border-0" required placeholder="https://...">
+                    </div>
+                </div>
+                <div class="modal-footer border-secondary">
+                    <button type="button" class="btn btn-outline-secondary btn-sm" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning btn-sm fw-bold">Cadastrar Integrante</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

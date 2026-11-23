@@ -1,0 +1,25 @@
+{% extends 'taverna/base.html' %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 500px;">
+    <div class="card shadow bg-dark text-light p-4 border-warning">
+        <h2 class="mb-4 text-warning text-center">Editar Quantidade do Pedido</h2>
+        
+        <p><strong>Jogo:</strong> {{ item.produto.nome }}</p>
+        <p><strong>Preço Unitário:</strong> R$ {{ item.produto.preco }}</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="quantidade" class="form-label">Nova Quantidade:</label>
+                <input type="number" name="quantidade" id="quantidade" value="{{ item.quantidade }}" min="1" class="form-control bg-secondary text-light border-0" required>
+            </div>
+
+            <div class="d-flex justify-content-between mt-4">
+                <a href="{% url 'meus_pedidos' %}" class="btn btn-outline-light">Cancelar</a>
+                <button type="submit" class="btn btn-warning">Salvar Alteração</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}

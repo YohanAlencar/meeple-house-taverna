@@ -1,0 +1,59 @@
+{% extends 'taverna/base.html' %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 500px;">
+    <div class="card bg-dark text-light border-warning p-4 shadow">
+        <h2 class="text-warning text-center fw-bold mb-4">ENTRAR NA TAVERNA</h2>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            {% if form.errors %}
+                <div class="alert alert-danger py-2 small">
+                    Por favor, entre com um usuário e senha corretos. Os campos diferenciam maiúsculas e minúsculas.
+                </div>
+            {% endif %}
+
+            <div class="mb-3">
+                <label class="form-label text-warning fw-bold">Usuário:</label>
+                {{ form.username }}
+            </div>
+
+            <div class="mb-2">
+                <label class="form-label text-warning fw-bold">Senha:</label>
+                {{ form.password }}
+            </div>
+
+            <!-- Link de Esqueceu a Senha exigido no PDF -->
+            <div class="text-end mb-4">
+                <a href="{% url 'password_reset' %}" class="text-decoration-none text-muted small">Esqueceu sua senha?</a>
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 fw-bold py-2">ENTRAR</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span class="text-muted small">Ainda não tens conta?</span> 
+            <a href="{% url 'cadastrar' %}" class="text-warning text-decoration-none small fw-bold">Regista-te aqui</a>
+        </div>
+    </div>
+</div>
+
+<!-- Estilo rápido para forçar os inputs gerados pelo Django a ficarem em modo escuro -->
+<style>
+    .card input {
+        background-color: #2b2b2b !important;
+        color: #ffffff !important;
+        border: 1px solid #444 !important;
+        padding: 10px;
+        width: 100%;
+        border-radius: 5px;
+    }
+    .card input:focus {
+        background-color: #333 !important;
+        color: #fff !important;
+        border-color: #ffc107 !important;
+        box-shadow: none;
+    }
+</style>
+{% endblock %}

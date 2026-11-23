@@ -1,0 +1,47 @@
+{% extends 'taverna/base.html' %}
+
+{% block content %}
+<div class="container my-5" style="max-width: 600px;">
+    <div class="card bg-dark text-light border-warning p-4 shadow">
+        <h2 class="text-warning text-center fw-bold mb-3">CRIAR NOVA CONTA</h2>
+        <p class="text-muted text-center small mb-4">Junta-te à nossa comunidade de aventureiros e mestres de jogo.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="mb-3">
+                {{ form.as_p }}
+            </div>
+
+            <button type="submit" class="btn btn-warning w-100 fw-bold py-2 mt-3">Criar Conta</button>
+        </form>
+
+        <div class="text-center mt-3">
+            <span class="text-muted small">Já tens conta?</span> 
+            <a href="{% url 'login' %}" class="text-warning text-decoration-none small fw-bold">Faz login</a>
+        </div>
+    </div>
+</div>
+
+<style>
+    .card input, .card select, .card textarea {
+        background-color: #2b2b2b !important;
+        color: #ffffff !important;
+        border: 1px solid #444 !important;
+        padding: 8px 12px;
+        width: 100%;
+        border-radius: 5px;
+    }
+    .card input:focus, .card select:focus, .card textarea:focus {
+        background-color: #333 !important;
+        color: #fff !important;
+        border-color: #ffc107 !important;
+        box-shadow: none;
+        outline: none;
+    }
+    .card ul, .card .helptext {
+        color: #adb5bd !important;
+        font-size: 0.85rem;
+    }
+</style>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+
+<!-- Hero Banner Estilo Mural de Guilda / Missões -->
+<div class="p-5 mb-5 rounded-3 text-center position-relative overflow-hidden shadow-lg" style="background: linear-gradient(145deg, #1f1813 0%, #120f0d 100%); border: 2px solid var(--wood-border);">
+    <div class="container-fluid py-4 position-relative" style="z-index: 2;">
+        <span class="badge px-3 py-2 mb-3" style="background-color: var(--wood-border); color: var(--gold-amber); font-family: 'Cinzel', serif; letter-spacing: 3px;">★ MURAL DA TAVERNA ★</span>
+        <h1 class="display-4 fw-bold mb-3" style="color: var(--gold-amber); text-shadow: 0 3px 6px rgba(0,0,0,0.9);">Bem-vindo à Meeple House</h1>
+        <p class="col-md-8 fs-5 mx-auto text-muted mb-4" style="line-height: 1.7;">
+            Reúne o teu grupo de aventureiros, escolhe a tua classe e prepara-te para rolar os dados. A maior ludoteca e taverna medieval da região aguarda a tua chegada.
+        </p>
+        <div class="d-flex justify-content-center gap-3">
+            <a class="btn btn-warning btn-lg px-4 shadow" href="{% url 'produtos' %}">⚔️ Explorar Ludoteca</a>
+            <a class="btn btn-outline-warning btn-lg px-4" href="{% url 'quem_somos' %}">🛡️ Conhecer a Guilda</a>
+        </div>
+    </div>
+</div>
+
+<!-- Secção de Destaques em Formato de Fichas -->
+<div class="row g-4 text-center mt-2">
+    <div class="col-md-4">
+        <div class="card h-100 p-4 shadow-lg" style="background: linear-gradient(145deg, #1c1511 0%, #120f0d 100%); border: 1px solid var(--wood-border);">
+            <div class="mb-3" style="font-size: 2.5rem;">🎲</div>
+            <h3 class="h4" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Acervo Épico</h3>
+            <p class="text-muted small mt-2">Mais de 300 jogos de tabuleiro disponíveis para testes, desde party games rápidos a complexos jogos de estratégia.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 p-4 shadow-lg" style="background: linear-gradient(145deg, #1c1511 0%, #120f0d 100%); border: 1px solid var(--wood-border);">
+            <div class="mb-3" style="font-size: 2.5rem;">🍺</div>
+            <h3 class="h4" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Ambiente Imersivo</h3>
+            <p class="text-muted small mt-2">Mesas espaçosas, iluminação temática a lembrar castelos e o refúgio perfeito para o teu grupo de campanhas.</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card h-100 p-4 shadow-lg" style="background: linear-gradient(145deg, #1c1511 0%, #120f0d 100%); border: 1px solid var(--wood-border);">
+            <div class="mb-3" style="font-size: 2.5rem;">📜</div>
+            <h3 class="h4" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Mestres de Regras</h3>
+            <p class="text-muted small mt-2">A nossa equipa está sempre pronta para ensinar regras novas e garantir que a tua mesa corre sem conflitos.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,73 @@
+{% extends 'taverna/base.html' %}
+{% block content %}
+<div class="container my-5 text-light">
+    
+    <!-- Título Secção Local -->
+    <div class="text-center mb-4">
+        <span class="badge bg-secondary mb-2">Acervo da Taverna</span>
+        <h2 class="fw-bold" style="font-family: serif;">JOGOS DA NOSSA LUDOTECA</h2>
+        <p class="text-muted">Selecione e adicione os melhores jogos ao seu pedido.</p>
+    </div>
+
+    <!-- Lista de Produtos Locais (Banco de Dados) -->
+    <div class="row">
+        {% for produto in produtos_locais %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm bg-dark text-white border-secondary">
+                {% if produto.foto %}
+                    <img src="{{ produto.foto }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 200px; object-fit: cover;">
+                {% else %}
+                    <img src="https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="{{ produto.nome }}" style="height: 200px; object-fit: cover;">
+                {% endif %}
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title text-warning">{{ produto.nome }}</h5>
+                    <p class="card-text text-light small">{{ produto.descricao|truncatechars:60 }}</p>
+                    <p class="card-text fw-bold text-success mt-auto">R$ {{ produto.preco }}</p>
+                    
+                    <!-- Botão de Compra restrito a utilizadores autenticados -->
+                    {% if request.user.is_authenticated %}
+                        <a href="{% url 'adicionar_ao_pedido' produto.id %}" class="btn btn-success btn-sm mt-2 w-100">Comprar</a>
+                    {% else %}
+                        <small class="text-muted text-center mt-2 d-block">Faça login para comprar</small>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-4">
+            <p class="text-muted">Nenhum jogo cadastrado na ludoteca local ainda. Adicione via painel administrativo!</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <hr class="my-5 border-secondary">
+
+    <!-- Título Secção API Externa -->
+    <div class="text-center mb-4">
+        <span class="badge bg-secondary mb-2">Parceiros Externos</span>
+        <h3 class="fw-bold" style="font-family: serif;">PRODUTOS DE LOJAS PARCEIRAS (API)</h3>
+        <p class="text-muted">Itens importados via integração REST em tempo real.</p>
+    </div>
+
+    <!-- Lista de Produtos da API Externa -->
+    <div class="row">
+        {% for item in produtos_api %}
+        <div class="col-md-3 mb-4">
+            <div class="card h-100 shadow-sm bg-dark text-white border-secondary">
+                <img src="{{ item.image }}" class="card-img-top p-3 bg-white" alt="{{ item.title }}" style="height: 200px; object-fit: contain;">
+                <div class="card-body d-flex flex-column">
+                    <h5 class="card-title fs-6 text-warning">{{ item.title|truncatechars:40 }}</h5>
+                    <p class="card-text text-light small">{{ item.description|truncatechars:50 }}</p>
+                    <p class="card-text fw-bold text-primary mt-auto">$ {{ item.price }}</p>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12 text-center py-4">
+            <p class="text-muted">A carregar produtos da API externa...</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}

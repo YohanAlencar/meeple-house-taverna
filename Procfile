@@ -1,0 +1,1 @@
+web: gunicorn meeple_house.wsgi:application --log-file -

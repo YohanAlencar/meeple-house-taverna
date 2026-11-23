@@ -1,0 +1,109 @@
+{% extends 'taverna/base.html' %}
+
+{% block content %}
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="text-warning fw-bold">Gerenciamento de Serviços / Jogos</h2>
+            <p class="text-muted">Cadastre, pesquise e gerencie os serviços e jogos disponíveis na taverna.</p>
+        </div>
+        <a href="{% url 'cadastrar_servico' %}" class="btn btn-warning fw-bold">+ Novo Serviço</a>
+    </div>
+
+    <!-- Cards Estatísticos -->
+    <div class="row g-3 mb-4">
+        <div class="col-md-4">
+            <div class="card bg-dark text-light border-secondary p-3 shadow">
+                <span class="text-muted small">Total de Registros</span>
+                <h3 class="text-warning fw-bold mb-0">{{ total_servicos }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-light border-secondary p-3 shadow">
+                <span class="text-muted small">Ativos</span>
+                <h3 class="text-success fw-bold mb-0">{{ total_ativos }}</h3>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-dark text-light border-secondary p-3 shadow">
+                <span class="text-muted small">Inativos</span>
+                <h3 class="text-danger fw-bold mb-0">{{ total_inativos }}</h3>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros e Pesquisa -->
+    <div class="card bg-dark text-light border-secondary p-4 mb-4 shadow">
+        <form method="get" class="row g-3">
+            <div class="col-md-6">
+                <input type="text" name="q" value="{{ request.GET.q|default:'' }}" placeholder="Pesquisar por nome..." class="form-control bg-secondary text-light border-0">
+            </div>
+            <div class="col-md-4">
+                <select name="categoria" class="form-select bg-secondary text-light border-0">
+                    <option value="">Todas as Categorias</option>
+                    {% for cat in categorias %}
+                        <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"s" %}selected{% endif %}>{{ cat.nome }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-2">
+                <button type="submit" class="btn btn-warning w-100 fw-bold">Filtrar</button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Tabela de Serviços -->
+    {% if servicos %}
+        <div class="table-responsive">
+            <table class="table table-dark table-striped align-middle border-secondary">
+                <thead>
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nome</th>
+                        <th>Categoria</th>
+                        <th>Preço</th>
+                        <th>Status</th>
+                        <th class="text-center">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in servicos %}
+                    <tr>
+                        <td>
+                            {% if s.foto %}
+                                <img src="{{ s.foto }}" alt="{{ s.nome }}" style="width: 40px; height: 40px; object-fit: cover;" class="rounded">
+                            {% else %}
+                                <span class="badge bg-secondary">Sem foto</span>
+                            {% endif %}
+                        </td>
+                        <td class="fw-bold">{{ s.nome }}</td>
+                        <td>{{ s.categoria.nome }}</td>
+                        <td>R$ {{ s.preco }}</td>
+                        <td>
+                            {% if s.ativo %}
+                                <span class="badge bg-success">Ativo</span>
+                            {% else %}
+                                <span class="badge bg-danger">Inativo</span>
+                            {% endif %}
+                        </td>
+                        <td class="text-center">
+                            <a href="{% url 'editar_servico' s.id %}" class="btn btn-sm btn-warning me-1">Editar</a>
+                            <a href="{% url 'excluir_servico' s.id %}" class="btn btn-sm btn-danger" onclick="return confirm('Deseja excluir este serviço?');">Excluir</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="card bg-dark text-light border-secondary text-center p-5 shadow">
+            <p class="text-muted mb-3">Nenhum serviço/produto registrado ou encontrado com os filtros atuais.</p>
+            <a href="{% url 'cadastrar_servico' %}" class="btn btn-warning w-auto mx-auto fw-bold">Criar Primeiro Serviço</a>
+        </div>
+    {% endif %}
+
+    <div class="mt-4">
+        <a href="{% url 'dashboard' %}" class="text-warning text-decoration-none">← Voltar ao Dashboard</a>
+    </div>
+</div>
+{% endblock %}
