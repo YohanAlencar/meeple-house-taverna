@@ -1,33 +1,47 @@
 import os
 from supabase import Client, create_client
 
-SUPABASE_URL = os.environ.get("SUPABASE_URL", "")
-SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "")
+SUPABASE_URL = os.environ.get("SUPABASE_URL", "").strip()
+SUPABASE_KEY = os.environ.get("SUPABASE_KEY", "").strip()
 
-print("--- A TENTAR LIGAR AO SUPABASE ---")
-print("URL:", SUPABASE_URL)
+ultimo_erro_supabase = None
+
+print("--- A TENTAR LIGAR AO SUPABASE ---", flush=True)
+print("URL:", SUPABASE_URL, flush=True)
 
 supabase: Client = None
 if SUPABASE_URL and SUPABASE_KEY:
     try:
         supabase = create_client(SUPABASE_URL, SUPABASE_KEY)
-        print(">>> CLIENTE SUPABASE CRIADO COM SUCESSO! <<<")
+        print(">>> CLIENTE SUPABASE CRIADO COM SUCESSO! <<<", flush=True)
     except Exception as e:
-        print(">>> ERRO CRÍTICO AO CRIAR CLIENTE SUPABASE:", e)
+        ultimo_erro_supabase = f"Erro ao criar cliente: {e}"
+        print(">>> ERRO CRÍTICO AO CRIAR CLIENTE SUPABASE:", e, flush=True)
 else:
-    print(">>> AVISO: SUPABASE_URL ou SUPABASE_KEY não configurados no ambiente. <<<")
+    ultimo_erro_supabase = "SUPABASE_URL ou SUPABASE_KEY vazios no ambiente."
+    print(
+        ">>> AVISO: SUPABASE_URL ou SUPABASE_KEY não configurados no ambiente. <<<",
+        flush=True,
+    )
 
 
 def buscar_integrantes():
     """Busca os integrantes cadastrados no Supabase."""
+    global ultimo_erro_supabase
     try:
         if supabase:
             response = supabase.table("integrantes").select("*").execute()
-            print("Resposta do Supabase ao buscar:", response.data)
+            print("Resposta do Supabase ao buscar:", response.data, flush=True)
             if response.data:
+                ultimo_erro_supabase = None
                 return response.data
+            ultimo_erro_supabase = "Supabase respondeu, mas a tabela 'integrantes' está vazia (sem linhas ou bloqueada por RLS)."
+        else:
+            if not ultimo_erro_supabase:
+                ultimo_erro_supabase = "Cliente supabase é None."
     except Exception as e:
-        print("ERRO em buscar_integrantes:", e)
+        ultimo_erro_supabase = f"Erro em buscar_integrantes: {e}"
+        print("ERRO em buscar_integrantes:", e, flush=True)
 
     return [
         {
@@ -58,10 +72,10 @@ def adicionar_integrante(dados):
     try:
         if supabase:
             resposta = supabase.table("integrantes").insert(dados).execute()
-            print("Inserção executada:", resposta)
+            print("Inserção executada:", resposta, flush=True)
             return resposta.data
     except Exception as e:
-        print("ERRO em adicionar_integrante:", e)
+        print("ERRO em adicionar_integrante:", e, flush=True)
     return None
 
 
@@ -74,10 +88,10 @@ def atualizar_integrante(integrante_id, dados):
                 .eq("id", integrante_id)
                 .execute()
             )
-            print("Atualização executada:", resposta)
+            print("Atualização executada:", resposta, flush=True)
             return resposta.data
     except Exception as e:
-        print("ERRO em atualizar_integrante:", e)
+        print("ERRO em atualizar_integrante:", e, flush=True)
     return None
 
 
@@ -90,8 +104,8 @@ def deletar_integrante(integrante_id):
                 .eq("id", integrante_id)
                 .execute()
             )
-            print("Remoção executada:", resposta)
+            print("Remoção executada:", resposta, flush=True)
             return resposta.data
     except Exception as e:
-        print("ERRO em deletar_integrante:", e)
+        print("ERRO em deletar_integrante:", e, flush=True)
     return None
