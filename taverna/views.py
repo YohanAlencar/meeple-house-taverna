@@ -32,11 +32,14 @@ def produtos(request):
     produtos_api = []
     try:
         response = requests.get(
-            "https://fakestoreapi.com/products?limit=4", timeout=4
+            "https://fakestoreapi.com/products?limit=4", timeout=8
         )
+        print("Status FakeStoreAPI:", response.status_code, flush=True)
         if response.status_code == 200:
             produtos_api = response.json()
-    except Exception:
+            print("Qtd produtos API:", len(produtos_api), flush=True)
+    except Exception as e:
+        print("ERRO na FakeStoreAPI:", repr(e), flush=True)
         produtos_api = []
 
     return render(
