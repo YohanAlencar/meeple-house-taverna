@@ -15,9 +15,9 @@
         <div class="col-md-3 mb-4">
             <div class="card h-100 shadow-sm bg-dark text-white border-secondary">
                 {% if produto.foto %}
-                    <img src="{{ produto.foto }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 200px; object-fit: cover;">
+                    <img src="{{ produto.foto }}" class="card-img-top" alt="{{ produto.nome }}" style="height: 220px; width: 100%; object-fit: cover;">
                 {% else %}
-                    <img src="https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="{{ produto.nome }}" style="height: 200px; object-fit: cover;">
+                    <img src="https://images.unsplash.com/photo-1610890716171-6b1bb98ffd09?w=500&auto=format&fit=crop&q=60" class="card-img-top" alt="{{ produto.nome }}" style="height: 220px; width: 100%; object-fit: cover;">
                 {% endif %}
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title text-warning">{{ produto.nome }}</h5>
@@ -54,7 +54,7 @@
         {% for item in produtos_api %}
         <div class="col-md-3 mb-4">
             <div class="card h-100 shadow-sm bg-dark text-white border-secondary">
-                <img src="{{ item.image }}" class="card-img-top p-3 bg-white" alt="{{ item.title }}" style="height: 200px; object-fit: contain;">
+                <img src="{{ item.image }}" class="card-img-top d-block mx-auto" alt="{{ item.title }}" style="height: 220px; width: 100%; object-fit: cover;">
                 <div class="card-body d-flex flex-column">
                     <h5 class="card-title fs-6 text-warning">{{ item.title|truncatechars:40 }}</h5>
                     <p class="card-text text-light small">{{ item.description|truncatechars:50 }}</p>
