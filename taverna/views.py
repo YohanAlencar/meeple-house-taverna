@@ -1,7 +1,7 @@
 import json
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
@@ -46,6 +46,10 @@ PRODUTOS_API_FALLBACK = [
         "image": "https://images.unsplash.com/photo-1583743814966-8936f5b7be1a?auto=format&fit=crop&w=800&q=80",
     },
 ]
+
+
+def eh_admin(user):
+    return user.is_authenticated and (user.is_staff or user.is_superuser)
 
 
 def home(request):
@@ -244,7 +248,7 @@ def editar_perfil(request):
     return render(request, "taverna/editar_perfil.html")
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def gerenciar_contatos(request):
     contatos = ContatoMensagem.objects.all().order_by("-data_envio")
     return render(
@@ -252,7 +256,7 @@ def gerenciar_contatos(request):
     )
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def gerenciar_servicos(request):
     servicos = Produto.objects.all().select_related("categoria")
     categorias = Categoria.objects.all()
@@ -284,7 +288,7 @@ def gerenciar_servicos(request):
     return render(request, "taverna/gerenciar_servicos.html", contexto)
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def cadastrar_servico(request):
     categorias = Categoria.objects.all()
     if request.method == "POST":
@@ -315,7 +319,7 @@ def cadastrar_servico(request):
     )
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def editar_servico(request, servico_id):
     servico = get_object_or_404(Produto, id=servico_id)
     categorias = Categoria.objects.all()
@@ -341,7 +345,7 @@ def editar_servico(request, servico_id):
     )
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def excluir_servico(request, servico_id):
     servico = get_object_or_404(Produto, id=servico_id)
     servico.delete()
@@ -349,7 +353,7 @@ def excluir_servico(request, servico_id):
     return redirect("gerenciar_servicos")
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def gerenciar_equipe(request):
     if request.method == "POST":
         nome = request.POST.get("nome")
@@ -380,7 +384,7 @@ def gerenciar_equipe(request):
     )
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def editar_integrante(request, integrante_id):
     integrantes = buscar_integrantes()
     integrante_atual = next(
@@ -424,7 +428,7 @@ def editar_integrante(request, integrante_id):
     )
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def excluir_integrante(request, integrante_id):
     try:
         target_id = int(integrante_id)
@@ -441,7 +445,7 @@ def excluir_integrante(request, integrante_id):
     return redirect("gerenciar_equipe")
 
 
-@login_required
+@user_passes_test(eh_admin, login_url="dashboard")
 def relatorios(request):
     total_servicos = Produto.objects.count()
     servicos_ativos = Produto.objects.filter(ativo=True).count()
