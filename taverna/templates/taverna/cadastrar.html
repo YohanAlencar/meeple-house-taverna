@@ -4,7 +4,7 @@
 <div class="container my-5" style="max-width: 600px;">
     <div class="card bg-dark text-light border-warning p-4 shadow">
         <h2 class="text-warning text-center fw-bold mb-3">CRIAR NOVA CONTA</h2>
-        <p class="text-muted text-center small mb-4">Junta-te à nossa comunidade de aventureiros e mestres de jogo.</p>
+        <p class="text-muted text-center small mb-4">Junte-se a nossa comunidade de aventureiros e mestres de jogos.</p>
 
         <form method="post">
             {% csrf_token %}
@@ -17,7 +17,7 @@
         </form>
 
         <div class="text-center mt-3">
-            <span class="text-muted small">Já tens conta?</span> 
+            <span class="text-muted small">Já tem uma conta?</span> 
             <a href="{% url 'login' %}" class="text-warning text-decoration-none small fw-bold">Faz login</a>
         </div>
     </div>

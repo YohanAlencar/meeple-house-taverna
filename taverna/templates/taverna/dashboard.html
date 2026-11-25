@@ -8,7 +8,7 @@
         <h1 class="display-6 fw-bold text-uppercase" style="color: var(--gold-amber); font-family: 'Cinzel', serif; letter-spacing: 2px;">
             Olá, {{ user.username|default:"Aventureiro" }}!
         </h1>
-        <p class="text-muted mb-0">Bem-vindo ao teu painel de controlo. Escolhe uma das opções abaixo para gerir o sistema.</p>
+        <p class="text-muted mb-0">Bem-vindo ao seu painel de controle. Escolha uma das opções abaixo para gerir o sistema.</p>
     </div>
 
     <!-- Grelha de Seções do Dashboard (Conforme exigido no PDF) -->
@@ -21,7 +21,7 @@
                     <div>
                         <div class="fs-2 mb-2">👤</div>
                         <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Editar Perfil</h5>
-                        <p class="text-muted small">Visualiza e edita as tuas informações pessoais e altera a tua palavra-passe.</p>
+                        <p class="text-muted small">Visualize e edite as suas informações pessoais e altere a sua senha.</p>
                     </div>
                     <a href="{% url 'editar_perfil' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Aceder Perfil →</a>
                 </div>
@@ -63,7 +63,7 @@
                     <div>
                         <div class="fs-2 mb-2">🛡️</div>
                         <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Equipe</h5>
-                        <p class="text-muted small">Gere a equipa de integrantes registada na base de dados remota do Supabase.</p>
+                        <p class="text-muted small">Gere a equipe de integrantes registrada na base de dados remota do Supabase.</p>
                     </div>
                     <a href="{% url 'gerenciar_equipe' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Gerir Equipe →</a>
                 </div>
@@ -77,7 +77,7 @@
                     <div>
                         <div class="fs-2 mb-2">🛒</div>
                         <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Meus Pedidos</h5>
-                        <p class="text-muted small">Visualiza os jogos e produtos que adicionaste ao teu carrinho de compras.</p>
+                        <p class="text-muted small">Visualize os jogos e produtos do seu carrinho de compras.</p>
                     </div>
                     <a href="{% url 'meus_pedidos' %}" class="btn btn-outline-warning btn-sm mt-3 w-100 fw-bold">Ver Pedidos →</a>
                 </div>
@@ -91,9 +91,9 @@
                     <div>
                         <div class="fs-2 mb-2">📊</div>
                         <h5 class="fw-bold" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">Relatórios</h5>
-                        <p class="text-muted small">Acede aos gráficos e estatísticas gerais dos serviços cadastrados.</p>
+                        <p class="text-muted small">Gráficos e estatísticas gerais dos serviços cadastrados.</p>
                     </div>
-                    <a href="{% url 'relatorios' %}" class="btn btn-warning btn-sm mt-3 w-100 fw-bold">Aceder Relatórios →</a>
+                    <a href="{% url 'relatorios' %}" class="btn btn-warning btn-sm mt-3 w-100 fw-bold">Relatórios →</a>
                 </div>
             </div>
         </div>
