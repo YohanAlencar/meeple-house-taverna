@@ -264,6 +264,15 @@ def gerenciar_contatos(request):
 
 
 @apenas_admin
+def excluir_contato(request, contato_id):
+    contato_msg = get_object_or_404(ContatoMensagem, id=contato_id)
+    if request.method == "POST":
+        contato_msg.delete()
+        messages.success(request, "Mensagem removida com sucesso!")
+    return redirect("gerenciar_contatos")
+
+
+@apenas_admin
 def gerenciar_servicos(request):
     servicos = Produto.objects.all().select_related("categoria")
     categorias = Categoria.objects.all()

@@ -80,6 +80,11 @@ urlpatterns = [
         "gerenciar/contatos/", views.gerenciar_contatos, name="gerenciar_contatos"
     ),
     path(
+        "gerenciar/contatos/excluir/<int:contato_id>/",
+        views.excluir_contato,
+        name="excluir_contato",
+    ),
+    path(
         "gerenciar/servicos/", views.gerenciar_servicos, name="gerenciar_servicos"
     ),
     path(
