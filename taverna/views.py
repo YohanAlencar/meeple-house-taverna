@@ -1,7 +1,8 @@
+from functools import wraps
 import json
 from django.contrib import messages
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.db.models import Count
 from django.shortcuts import get_object_or_404, redirect, render
@@ -44,6 +45,21 @@ PRODUTOS_API_FALLBACK = [
 
 def eh_admin(user):
     return user.is_authenticated and (user.is_staff or user.is_superuser)
+
+
+def apenas_admin(view_func):
+    @wraps(view_func)
+    def _wrapped(request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect("login")
+        if not eh_admin(request.user):
+            messages.error(
+                request, "Você não tem permissão para acessar essa página."
+            )
+            return redirect("dashboard")
+        return view_func(request, *args, **kwargs)
+
+    return _wrapped
 
 
 def home(request):
@@ -239,7 +255,7 @@ def editar_perfil(request):
     return render(request, "taverna/editar_perfil.html")
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def gerenciar_contatos(request):
     contatos = ContatoMensagem.objects.all().order_by("-data_envio")
     return render(
@@ -247,7 +263,7 @@ def gerenciar_contatos(request):
     )
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def gerenciar_servicos(request):
     servicos = Produto.objects.all().select_related("categoria")
     categorias = Categoria.objects.all()
@@ -279,7 +295,7 @@ def gerenciar_servicos(request):
     return render(request, "taverna/gerenciar_servicos.html", contexto)
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def cadastrar_servico(request):
     categorias = Categoria.objects.all()
     if request.method == "POST":
@@ -310,7 +326,7 @@ def cadastrar_servico(request):
     )
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def editar_servico(request, servico_id):
     servico = get_object_or_404(Produto, id=servico_id)
     categorias = Categoria.objects.all()
@@ -336,7 +352,7 @@ def editar_servico(request, servico_id):
     )
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def excluir_servico(request, servico_id):
     servico = get_object_or_404(Produto, id=servico_id)
     servico.delete()
@@ -344,7 +360,7 @@ def excluir_servico(request, servico_id):
     return redirect("gerenciar_servicos")
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def gerenciar_equipe(request):
     if request.method == "POST":
         nome = request.POST.get("nome")
@@ -367,7 +383,7 @@ def gerenciar_equipe(request):
     )
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def editar_integrante(request, integrante_id):
     integrante = get_object_or_404(Integrante, id=integrante_id)
 
@@ -388,7 +404,7 @@ def editar_integrante(request, integrante_id):
     )
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def excluir_integrante(request, integrante_id):
     integrante = get_object_or_404(Integrante, id=integrante_id)
     integrante.delete()
@@ -396,7 +412,7 @@ def excluir_integrante(request, integrante_id):
     return redirect("gerenciar_equipe")
 
 
-@user_passes_test(eh_admin, login_url="dashboard")
+@apenas_admin
 def relatorios(request):
     total_servicos = Produto.objects.count()
     servicos_ativos = Produto.objects.filter(ativo=True).count()
