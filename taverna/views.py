@@ -177,10 +177,7 @@ def adicionar_ao_pedido(request, produto_id):
         item.quantidade += 1
         item.save()
 
-    messages.success(
-        request,
-        f'"{produto.nome}" foi adicionado aos seus pedidos com sucesso!',
-    )
+    messages.success(request, "Item movido para o carrinho")
     return redirect("produtos")
 
 

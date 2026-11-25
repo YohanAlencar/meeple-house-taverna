@@ -65,6 +65,32 @@
             text-shadow: 0 0 8px rgba(245, 207, 102, 0.4);
         }
 
+        .carrinho-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 0.3rem 0.65rem !important;
+            border: 1px solid var(--wood-border);
+            border-radius: 6px;
+            background-color: #1a1410;
+        }
+
+        .carrinho-link:hover {
+            border-color: var(--gold-amber);
+            background-color: #211914;
+        }
+
+        .badge-carrinho {
+            background: linear-gradient(180deg, #e6be44 0%, #b88f28 100%);
+            color: #120f0d;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-weight: 700;
+            font-size: 0.78rem;
+            padding: 0.15rem 0.45rem;
+            border-radius: 999px;
+            line-height: 1.1;
+        }
+
         /* Cartões estilo Escudo/Painel de Madeira Medieval */
         .card {
             background-color: var(--wood-dark);
@@ -189,6 +215,12 @@
                     <li class="nav-item"><a class="nav-link" href="{% url 'quem_somos' %}">Quem Somos</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'produtos' %}">Ludoteca</a></li>
                     <li class="nav-item"><a class="nav-link" href="{% url 'contato' %}">Contato</a></li>
+                    <li class="nav-item">
+                        <a class="nav-link carrinho-link" href="{% url 'meus_pedidos' %}" title="Ir para meus pedidos">
+                            <span>🛒</span>
+                            <span class="badge-carrinho">{{ total_itens_carrinho|default:0 }}</span>
+                        </a>
+                    </li>
                     
                     {% if user.is_authenticated %}
                         <li class="nav-item ms-2">
@@ -214,6 +246,17 @@
     </nav>
 
     <main class="container my-5">
+        {% if messages %}
+            <div class="mb-4">
+                {% for message in messages %}
+                    <div class="alert alert-{% if message.tags == 'error' %}danger{% else %}{{ message.tags }}{% endif %} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Fechar"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+
         {% block content %}
         {% endblock %}
     </main>
