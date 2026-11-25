@@ -1,27 +1,37 @@
 {% extends 'taverna/base.html' %}
+
 {% block content %}
-<h2 class="fw-bold mb-4">Mensagens Recebidas</h2>
-<table class="table table-striped">
-    <thead>
-        <tr>
-            <th>Nome</th>
-            <th>E-mail</th>
-            <th>Mensagem</th>
-            <th>Data</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for m in mensagens %}
-        <tr>
-            <td>{{ m.nome }}</td>
-            <td>{{ m.email }}</td>
-            <td>{{ m.mensagem }}</td>
-            <td>{{ m.data_envio|date:"d/m/Y H:i" }}</td>
-        </tr>
-        {% empty %}
-        <tr><td colspan="4" class="text-center text-muted">Nenhuma mensagem recebida.</td></tr>
-        {% endfor %}
-    </tbody>
-</table>
-<a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">Voltar ao Dashboard</a>
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold mb-0">Mensagens Recebidas</h2>
+    <a href="{% url 'dashboard' %}" class="btn btn-outline-warning btn-sm">Voltar ao Dashboard</a>
+</div>
+
+<div class="card p-3">
+    <div class="table-responsive">
+        <table class="table table-dark table-striped table-hover align-middle mb-0" style="--bs-table-bg: #281e18; --bs-table-striped-bg: #211914; --bs-table-hover-bg: #33261e; --bs-table-color: #e6dfd5; --bs-table-border-color: #423227;">
+            <thead>
+                <tr>
+                    <th style="color: #d4af37;">Nome</th>
+                    <th style="color: #d4af37;">E-mail</th>
+                    <th style="color: #d4af37;">Mensagem</th>
+                    <th style="color: #d4af37;">Data</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for m in contatos %}
+                <tr>
+                    <td>{{ m.nome }}</td>
+                    <td>{{ m.email }}</td>
+                    <td>{{ m.mensagem }}</td>
+                    <td>{{ m.data_envio|date:"d/m/Y H:i" }}</td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="4" class="text-center py-4" style="color: #a3998e;">Nenhuma mensagem recebida.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
 {% endblock %}
