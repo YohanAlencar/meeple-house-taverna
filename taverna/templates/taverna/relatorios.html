@@ -2,10 +2,16 @@
 {% block content %}
 
 <div class="container py-4">
-    <div class="mb-4">
-        <span class="text-muted small text-uppercase">ANÁLISE E DADOS</span>
-        <h2 class="fw-bold">Relatórios de Serviços</h2>
-        <p class="text-muted">Acompanhe a métrica e a distribuição dos serviços cadastrados no sistema.</p>
+    <div class="d-flex justify-content-between align-items-start mb-4">
+        <div>
+            <span class="text-muted small text-uppercase">ANÁLISE E DADOS</span>
+            <h2 class="fw-bold mb-1">Relatórios de Serviços</h2>
+            <p class="text-muted mb-0">Acompanhe a métrica e a distribuição dos serviços cadastrados no sistema.</p>
+        </div>
+        <a href="{% url 'dashboard' %}" class="text-decoration-none fw-semibold d-inline-flex align-items-center gap-1" style="color: var(--gold-amber); font-family: 'Cinzel', serif;">
+            <span>&larr;</span>
+            <span>Voltar ao Dashboard</span>
+        </a>
     </div>
 
     <!-- Cards de Indicadores -->
