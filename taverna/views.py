@@ -8,13 +8,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 import requests
 
-from .models import Categoria, ContatoMensagem, ItemPedido, Produto
-from .supabase_client import (
-    adicionar_integrante,
-    atualizar_integrante,
-    buscar_integrantes,
-    deletar_integrante,
-)
+from .models import Categoria, ContatoMensagem, Integrante, ItemPedido, Produto
 
 PRODUTOS_API_FALLBACK = [
     {
@@ -57,7 +51,7 @@ def home(request):
 
 
 def quem_somos(request):
-    integrantes = buscar_integrantes()
+    integrantes = Integrante.objects.all()
     return render(request, "taverna/quem_somos.html", {"integrantes": integrantes})
 
 
@@ -354,28 +348,20 @@ def excluir_servico(request, servico_id):
 def gerenciar_equipe(request):
     if request.method == "POST":
         nome = request.POST.get("nome")
-        cargo = request.POST.get("cargo")
-        biografia = request.POST.get("biografia")
-        foto_url = request.POST.get("foto_url")
+        cargo = request.POST.get("cargo", "")
+        biografia = request.POST.get("biografia", "")
+        foto_url = request.POST.get("foto_url") or None
         if nome:
-            inserido = adicionar_integrante({
-                "nome": nome,
-                "cargo": cargo,
-                "biografia": biografia,
-                "foto_url": foto_url,
-            })
-            if inserido:
-                messages.success(
-                    request, "Novo integrante adicionado ao Supabase!"
-                )
-            else:
-                messages.warning(
-                    request,
-                    "Não foi possível adicionar o integrante. Veja o terminal.",
-                )
+            Integrante.objects.create(
+                nome=nome,
+                cargo=cargo,
+                biografia=biografia,
+                foto_url=foto_url,
+            )
+            messages.success(request, "Novo integrante adicionado com sucesso!")
             return redirect("gerenciar_equipe")
 
-    integrantes = buscar_integrantes()
+    integrantes = Integrante.objects.all()
     return render(
         request, "taverna/gerenciar_equipe.html", {"integrantes": integrantes}
     )
@@ -383,62 +369,30 @@ def gerenciar_equipe(request):
 
 @user_passes_test(eh_admin, login_url="dashboard")
 def editar_integrante(request, integrante_id):
-    integrantes = buscar_integrantes()
-    integrante_atual = next(
-        (i for i in integrantes if str(i.get("id")) == str(integrante_id)), None
-    )
-
-    if integrante_atual is None and request.method == "GET":
-        messages.error(request, "Integrante não encontrado.")
-        return redirect("gerenciar_equipe")
+    integrante = get_object_or_404(Integrante, id=integrante_id)
 
     if request.method == "POST":
-        dados_atualizados = {
-            "nome": request.POST.get("nome"),
-            "cargo": request.POST.get("cargo"),
-            "biografia": request.POST.get("biografia"),
-            "foto_url": request.POST.get("foto_url"),
-        }
+        integrante.nome = request.POST.get("nome")
+        integrante.cargo = request.POST.get("cargo", "")
+        integrante.biografia = request.POST.get("biografia", "")
+        integrante.foto_url = request.POST.get("foto_url") or None
+        integrante.save()
 
-        try:
-            target_id = int(integrante_id)
-        except ValueError:
-            target_id = integrante_id
-
-        atualizado = atualizar_integrante(target_id, dados_atualizados)
-        if atualizado:
-            messages.success(
-                request, "Integrante atualizado com sucesso no Supabase!"
-            )
-        else:
-            messages.warning(
-                request,
-                "Nenhuma linha foi alterada no Supabase. Veja o terminal.",
-            )
-
+        messages.success(request, "Integrante atualizado com sucesso!")
         return redirect("gerenciar_equipe")
 
     return render(
         request,
         "taverna/editar_integrante.html",
-        {"integrante": integrante_atual},
+        {"integrante": integrante},
     )
 
 
 @user_passes_test(eh_admin, login_url="dashboard")
 def excluir_integrante(request, integrante_id):
-    try:
-        target_id = int(integrante_id)
-    except ValueError:
-        target_id = integrante_id
-
-    removido = deletar_integrante(target_id)
-    if removido:
-        messages.success(request, "Integrante removido do Supabase!")
-    else:
-        messages.warning(
-            request, "Nenhum integrante foi removido. Veja o terminal."
-        )
+    integrante = get_object_or_404(Integrante, id=integrante_id)
+    integrante.delete()
+    messages.success(request, "Integrante removido com sucesso!")
     return redirect("gerenciar_equipe")
 
 
