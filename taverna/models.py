@@ -45,7 +45,8 @@ class ItemPedido(models.Model):
     def __str__(self):
         return f"{self.quantidade}x {self.produto.nome} ({self.usuario.username})"
 
-    class Integrante(models.Model):
+
+class Integrante(models.Model):
     nome = models.CharField(max_length=120)
     cargo = models.CharField(max_length=120, blank=True)
     biografia = models.TextField(blank=True)
